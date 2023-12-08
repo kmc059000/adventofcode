@@ -172,3 +172,9 @@ module TupleExtras =
         | Some y' -> Some (x, y')
         | None    -> None
         
+        
+module StringExtras =
+    let characters (str : string) = str.ToCharArray() |> Array.map _.ToString()
+    
+    let matches (regex : Regex) (str : string) =
+        regex.Matches(str).AsReadOnly() |> Seq.map _.Value |> Seq.toArray
