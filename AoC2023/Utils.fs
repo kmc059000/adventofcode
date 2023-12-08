@@ -178,3 +178,10 @@ module StringExtras =
     
     let matches (regex : Regex) (str : string) =
         regex.Matches(str).AsReadOnly() |> Seq.map _.Value |> Seq.toArray
+        
+        
+let rec gcdU64 (a : uint64) (b : uint64) =
+    if b = 0UL then a
+    else gcdU64 b (a % b)
+
+let lcmU64 (a : uint64) (b : uint64) = (a * b) / (gcdU64 a b)
