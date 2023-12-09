@@ -1,29 +1,26 @@
 ﻿module Day09
-open System
-open System.Text.RegularExpressions
 open Utils
 open AoC2023.Inputs.Day09
 
 let parse = splitInputByNewLines >> List.ofArray >> List.map (splitByList " " >> List.map int)
+let isAllZeros = List.exists ((<>) 0) >> not
+let nextInts = List.pairwise >> List.map (TupleExtras.applyBack (-))
 
-let nextInts = List.pairwise >> List.map (fun (x,y) -> y - x)
-
-let rec solve ints =
-    if List.exists ((<>) 0) ints then
-        let last = List.last ints
-        Console.WriteLine(last)
-        last + solve (nextInts ints)
-    else
+let rec solveBack ints =
+    
+    if isAllZeros ints then
         0
+    else
+        List.last ints + solveBack (nextInts ints)
         
 let rec solveFront ints =
-    if List.exists ((<>) 0) ints then
-        let first = List.head ints
-        first - solveFront (nextInts ints)
-    else
+    if isAllZeros ints then
         0
+    else
+        List.head ints - solveFront (nextInts ints)
 
-let solve1 = parse >> List.map solve >> List.reduce (+)
-let solve2 = parse >> List.map solveFront >> List.reduce (+)
+let solve lineSolver = parse >> List.map lineSolver >> List.reduce (+)
+let solve1 = solve solveBack
+let solve2 = solve solveFront
 
-let printAnswer = printAnswersWithSameInputs2 solve1 solve2 example1 p1
+let printAnswer = printAnswersWithSameInputs solve1 solve2 example1 p1

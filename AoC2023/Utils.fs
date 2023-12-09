@@ -174,6 +174,8 @@ module TupleExtras =
         | Some y' -> Some (x, y')
         | None    -> None
         
+    let applyBack f (x,y) = f y x
+        
         
 module StringExtras =
     let characters (str : string) = str.ToCharArray() |> Array.map _.ToString()
