@@ -6,8 +6,8 @@
 // open Day05
 // open Day06
 // open Day07
-open Day08
-// open Day09
+// open Day08
+open Day09
 // open Day10
 // open Day11
 // open Day12

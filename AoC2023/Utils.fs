@@ -11,6 +11,8 @@ let joinInts (separator : string) (ints : seq<int>) =
     |> String.concat separator
     
 let splitBy (separator : string) (str: string) = str.Split(separator, StringSplitOptions.RemoveEmptyEntries)
+let splitByList separator = splitBy separator >> List.ofArray
+
 
 let splitBy2 (separator : string) (str: string) =
     let tokens = splitBy separator str
