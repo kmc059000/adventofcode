@@ -30,9 +30,12 @@ let splitInputByDoubleNewLines (str : string) = str.Split("\n\n", StringSplitOpt
 
 let parseInt (str : string) = Int32.Parse(str)
 
+
 let splitByAll (separators : string) (str: string) = str.Split(separators.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
     
 let chars (str : string) = str.ToCharArray() |> Array.map string
+
+let charactersAs2dArray = splitInputByNewLines >> Array.map chars
 
 let replace (find: string) (replacement: string) (string : string) = string.Replace(find, replacement)
 
@@ -114,6 +117,7 @@ module SeqExtras =
     
     let mapFirst mapFn = Seq.mapi (fun i x -> if i = 0 then mapFn x else x)
    
+   
 let printAnswers1 solvePart1 e1 p1 solvePart2 e2 p2 =
     printfn "********* Part 1 *********"
     printfn "********* Example *********"
@@ -189,3 +193,7 @@ let rec gcdU64 (a : uint64) (b : uint64) =
     else gcdU64 b (a % b)
 
 let lcmU64 (a : uint64) (b : uint64) = (a * b) / (gcdU64 a b)
+
+
+module ListExtras =
+    let every fn = List.exists (fn >> not) >> not
