@@ -143,7 +143,9 @@ let printAnswers solvePart1 e1 p1 solvePart2 e2 p2 =
     
 let printAnswersWithSameInputs solve1 solve2 e1 p1 = printAnswers solve1 e1 p1 solve2 e1 p1
 let printAnswersWithSameInputs1 solve1 solve2 e1 p1 = printAnswers1 solve1 e1 p1 solve2 e1 p1
+let printAnswersWithSameInputs1Example solve1 solve2 e1 p1 = printAnswers1 solve1 e1 e1 solve2 e1 p1
 let printAnswersWithSameInputs2 solve1 solve2 e1 p1 = printAnswers2 solve1 e1 p1 solve2 e1 p1
+let printAnswersWithSameInputs2Example solve1 solve2 e1 p1 = printAnswers2 solve1 e1 e1 solve2 e1 e1
 
 let inline defaultIfEmpty d l = if List.isEmpty l then [d] else l
 
@@ -186,6 +188,8 @@ module StringExtras =
     
     let matches (regex : Regex) (str : string) =
         regex.Matches(str).AsReadOnly() |> Seq.map _.Value |> Seq.toArray
+        
+    let characterSquare = splitInputByNewLines >> Array.map characters
         
         
 let rec gcdU64 (a : uint64) (b : uint64) =
