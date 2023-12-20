@@ -201,3 +201,6 @@ let lcmU64 (a : uint64) (b : uint64) = (a * b) / (gcdU64 a b)
 
 module ListExtras =
     let every fn = List.exists (fn >> not) >> not
+    
+    
+let manhattanDistance (x1, y1) (x2, y2) = abs((int64 x1) - (int64 x2)) + abs((int64 y1) - (int64 y2))
