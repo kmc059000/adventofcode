@@ -9,11 +9,11 @@
 // open Day08
 // open Day09
 // open Day10
-open Day11
+// open Day11
 // open Day12
 // open Day13
 // open Day14
-// open Day15
+open Day15
 // open Day18
 printAnswer
 
