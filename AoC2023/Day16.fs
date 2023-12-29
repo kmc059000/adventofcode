@@ -78,7 +78,7 @@ let printVisited input visited =
         printf "\n"
     ) input
     
-let projectBeams (input: string array array) =
+let projectBeams print (input: string array array) start =
     let rec loop beams visited =
         let newBeams =
             beams
@@ -93,8 +93,8 @@ let projectBeams (input: string array array) =
             allVisited
         else
             loop newBeams allVisited
-    let r = loop [initialBeam] (Set.singleton initialBeam)
-    printVisited input r |> ignore
+    let r = loop [start] (Set.singleton start)
+    if print then printVisited input r |> ignore else ()
     r
 
 let countBeams beams =
@@ -105,9 +105,26 @@ let countBeams beams =
 
 let parse = charactersAs2dArray
 
-let solve1 = charactersAs2dArray >> projectBeams >> countBeams
+let solve1 = charactersAs2dArray >> flip (projectBeams false) initialBeam >> countBeams
 
-let solve2 = id
+
+let findBestStart (input: string array array) =
+    let starts =
+        [
+            [for r in 0..(Array.length input) - 1 do {row = r; col = 0; direction = Right}];
+            [for r in 0..(Array.length input) - 1 do {row = r; col = Array.length input[0] - 1; direction = Left}]
+            [for c in 0..(Array.length input[0]) - 1 do {row = 0; col = c; direction = Down}];
+            [for c in 0..(Array.length input[0]) - 1 do {row = Array.length input - 1; col = c; direction = Up}];
+        ]
+        |> List.collect id
+    
+    let best = starts
+               //|> List.map (fun start -> projectBeams input start |> TupleExtras.from2 start)
+               |> List.maxBy (projectBeams false input >> countBeams)
+    projectBeams true input best |> countBeams  
     
 
-let printAnswer = printAnswersWithSameInputs1 solve1 solve2 example1 p1
+let solve2 = charactersAs2dArray >> findBestStart
+    
+
+let printAnswer = printAnswersWithSameInputs2 solve1 solve2 example1 p1
