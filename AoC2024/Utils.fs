@@ -26,7 +26,18 @@ let splitIntsBySpaces = splitBySpaces >> Seq.map int
 
 let splitInputByNewLines (str : string) = str.Split("\n", StringSplitOptions.RemoveEmptyEntries)
 
+let splitInputByNewLinesList = splitInputByNewLines >> List.ofArray
+
 let splitInputByDoubleNewLines (str : string) = str.Split("\n\n", StringSplitOptions.RemoveEmptyEntries)
+
+let readColumns =
+    splitInputByNewLines
+    >> List.ofSeq
+    >> List.map (splitBySpaces >> List.ofArray)
+    >> List.transpose
+
+let readColumn col =
+    readColumns >> List.item col
 
 let parseInt (str : string) = Int32.Parse(str)
 
@@ -170,6 +181,9 @@ module TupleExtras =
 
     let extendSnd f (x,y) = x, f(x,y)
 
+    let fst2 (a, b) = a
+    let snd2 (a, b) = b
+
     let optionOfFst f (x, y) =
         match f x with
         | Some x' -> Some (x', y)
@@ -181,7 +195,8 @@ module TupleExtras =
         | None    -> None
         
     let applyBack f (x,y) = f y x
-        
+
+    let from2Seq lst = Seq.head lst, Seq.head (Seq.skip 1 lst)
         
 module StringExtras =
     let characters (str : string) = str.ToCharArray() |> Array.map _.ToString()
@@ -205,5 +220,7 @@ module ListExtras =
     let replaceElement findElement replaceElement list =
         list |> List.map (fun x -> if x = findElement then replaceElement else x)
     
-    
+
 let manhattanDistance (x1, y1) (x2, y2) = abs((int64 x1) - (int64 x2)) + abs((int64 y1) - (int64 y2))
+
+let absDifference (a,b) = abs(a - b)
