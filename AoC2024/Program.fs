@@ -1,9 +1,8 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
-open Day01
+open Day02
 print1
 print2
 
-//open Day02
 //open Day03
 //open Day04
 // open Day05

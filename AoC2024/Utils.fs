@@ -23,6 +23,7 @@ let splitBySpaces = splitBy " "
 let splitByComma = splitBy ","
 
 let splitIntsBySpaces = splitBySpaces >> Seq.map int
+let splitIntsBySpacesList =splitIntsBySpaces >> List.ofSeq
 
 let splitInputByNewLines (str : string) = str.Split("\n", StringSplitOptions.RemoveEmptyEntries)
 
@@ -70,6 +71,7 @@ let tapValues2<'a> v : 'a seq -> 'a seq = Seq.map (tapValue2 v)
 let flip f x y = f y x
 
 let isPositive x = x >= 0
+let isPurelyPositive x = x > 0
 
 let joinMaps (p:Map<'a,'b>) (q:Map<'a,'b>) = 
     Map(Seq.concat [ (Map.toSeq p) ; (Map.toSeq q) ])
@@ -224,3 +226,6 @@ module ListExtras =
 let manhattanDistance (x1, y1) (x2, y2) = abs((int64 x1) - (int64 x2)) + abs((int64 y1) - (int64 y2))
 
 let absDifference (a,b) = abs(a - b)
+
+type Sign = Positive | Negative | Zero
+let sign i = if i > 0 then Positive else if i < 0 then Negative else Zero
