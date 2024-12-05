@@ -13,6 +13,8 @@ let joinInts (separator : string) (ints : seq<int>) =
 let splitBy (separator : string) (str: string) = str.Split(separator, StringSplitOptions.RemoveEmptyEntries)
 let splitByList separator = splitBy separator >> List.ofArray
 
+let splitByMapList separator map = splitBy separator >> List.ofArray >> List.map map
+
 
 let splitBy2 (separator : string) (str: string) =
     let tokens = splitBy separator str
@@ -28,6 +30,7 @@ let splitIntsBySpacesList =splitIntsBySpaces >> List.ofSeq
 let splitInputByNewLines (str : string) = str.Split("\n", StringSplitOptions.RemoveEmptyEntries)
 
 let splitInputByNewLinesList = splitInputByNewLines >> List.ofArray
+let splitInputByNewLinesMapList map = splitInputByNewLines >> List.ofArray >> List.map map
 
 let splitInputByDoubleNewLines (str : string) = str.Split("\n\n", StringSplitOptions.RemoveEmptyEntries)
 
