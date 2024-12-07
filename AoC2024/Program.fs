@@ -1,5 +1,5 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
-open Day05
+open Day04
 print1
 print2
 

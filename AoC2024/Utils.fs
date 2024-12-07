@@ -34,11 +34,12 @@ let splitInputByNewLinesMapList map = splitInputByNewLines >> List.ofArray >> Li
 
 let splitInputByDoubleNewLines (str : string) = str.Split("\n\n", StringSplitOptions.RemoveEmptyEntries)
 
-let readColumns =
+let readRows =
     splitInputByNewLines
     >> List.ofSeq
     >> List.map (splitBySpaces >> List.ofArray)
-    >> List.transpose
+
+let readColumns = readRows >> List.transpose
 
 let readColumn col =
     readColumns >> List.item col
