@@ -23,6 +23,7 @@ let splitBy2 (separator : string) (str: string) =
 
 let splitBySpaces = splitBy " "
 let splitByComma = splitBy ","
+let splitByCommaList = splitBy "," >> List.ofArray
 
 let splitIntsBySpaces = splitBySpaces >> Seq.map int
 let splitIntsBySpacesList =splitIntsBySpaces >> List.ofSeq
