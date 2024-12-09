@@ -88,16 +88,80 @@ let printDisk disk =
     Console.WriteLine(str)
     disk
 
-example1 |> parse |> compact |> printDisk |> checksum |> tapValue |> ignore
+//example1 |> parse |> compact |> printDisk |> checksum |> tapValue |> ignore
 
 let solve = parse >> compact >> checksum
 
 let print1 =
-    Console.WriteLine(solve example1)
-    Console.WriteLine(solve p1)
+    //Console.WriteLine(solve example1)
+    //Console.WriteLine(solve p1)
     ()
-   
+
+let rec compact2 (disk: Disk) =
+    let spanLengths =
+        disk
+        |> Map.values
+        |> List.ofSeq
+        |> List.filter (function Filled _ -> true | _ -> false)
+        |> List.map (function Filled value -> value | _ -> failwith "impossible")
+        |> List.groupBy id
+        |> List.map (fun (value, group) -> value, group.Length)
+        |> Map.ofList
+
+    let rec compact' leftIdx rightIdx (disk: Disk) =
+        if rightIdx <= 0 then
+            disk
+        elif leftIdx >= rightIdx then
+            let right = Map.find rightIdx disk
+            tapValue ("giving up on " + string right)
+            compact' 0 (rightIdx - 1) disk
+        else
+            let left = Map.find leftIdx disk
+            let right = Map.find rightIdx disk
+
+            match left, right with
+            // end is empty, so iterate from the end
+            | _, Empty -> compact' leftIdx (rightIdx - 1) disk
+            // both spots are filled, cant fill so move from the left in
+            | Filled _, Filled _ -> compact' (leftIdx + 1) rightIdx disk
+            | Empty, Filled value ->
+                //determine size of filled span
+                // determine size of empty span
+                // if size is enough, move, otherwise, move leftIdx to end of empty span
+                let filledSize = spanLengths.[value]
+                let emptySize =
+                    seq { for i in leftIdx..Map.count disk - 1 -> Map.find i disk }
+                    |> Seq.takeWhile (function
+                        | Empty -> true
+                        // if the empty overlaps the span that were moving, that is okay
+                        | Filled _ -> false)
+                     |> Seq.length
+                if emptySize < filledSize then
+                    // not big enough, so move leftIdx to the end of the empty sequence, and move rightIdx to the next file
+                    compact' (leftIdx + emptySize) (rightIdx) disk
+                else
+                    //empty is big enough, so move all the filled items to the empty
+                    // and then recurse
+                    let spacesToFill = [ for i in leftIdx..leftIdx + filledSize - 1 -> i ]
+                    let spacesToEmpty = [ for i in (rightIdx - filledSize + 1)..rightIdx -> i ]
+
+                    let emptied = List.fold (fun acc i -> Map.add i Empty acc) disk spacesToEmpty
+                    let newDisk = List.fold (fun acc i -> Map.add i (Filled value) acc) emptied spacesToFill
+
+                    tapValue ("moved " + string value)
+
+                    //printDisk newDisk
+
+                    // start left from the beginning since there may be empty spaces that we can put things in
+                    compact' 0 (rightIdx - filledSize) newDisk
+
+    compact' 0 ((Map.count disk ) - 1) disk
+
+//example1 |> parse |> printDisk |> compact2 |> printDisk |> checksum |> tapValue |> ignore
+
+let solve2 = parse >> compact2 >> checksum
+
 let print2 =
-    Console.WriteLine("")
-    Console.WriteLine("")
+    //Console.WriteLine(solve2 example1)
+    Console.WriteLine(solve2 p1)
     ()
