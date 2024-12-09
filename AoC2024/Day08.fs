@@ -14,22 +14,20 @@ type Antenna = {
     value: String
 }
 
-type Map = {
+type Board = {
     antennas: Antenna list
-    height: int
-    width: int
+    rows: int
+    columns: int
 }
 
 let makeAntenna row col value = { pos = { row = row; col = col }; value = value }
 
-let antinode a b =
-    let run = a.col - b.col
-    let rise = a.row - b.row
-    { col = a.col + run; row = a.row + rise }
-
-let bothAntinodes a b =
+let allAntinodes a b =
+    let antinode a b =
+        let run = a.col - b.col
+        let rise = a.row - b.row
+        { col = a.col + run; row = a.row + rise }
     [antinode a b; antinode b a]
-let bothAntinodesTuple (a,b) = bothAntinodes a b
 
 
 let rec pairs l = seq {
@@ -41,20 +39,18 @@ let rec pairs l = seq {
     | _ -> ()
     }
 
-let pairsList = pairs >> List.ofSeq
-
 let isValidPos map pos =
-    pos.row >= 0 && pos.row < map.height && pos.col >= 0 && pos.col < map.width
+    pos.row >= 0 && pos.row < map.rows && pos.col >= 0 && pos.col < map.columns
 
-let allAntinodesOfGroup = pairsList >> List.map bothAntinodesTuple >> List.concat
+let antinodesOfGroup antinodeFn = pairs >> List.ofSeq >> List.map (fun a -> a ||> antinodeFn) >> List.concat
 
 let antennaGroups map =
     map.antennas |> List.groupBy _.value |> List.map snd |> List.ofSeq
 
-let allAntinodes map =
+let mapAntinodes antinodeFn map =
      map
      |> (antennaGroups
-         >> List.collect (List.map _.pos >> List.ofSeq >> allAntinodesOfGroup)
+         >> List.collect (List.map _.pos >> List.ofSeq >> antinodesOfGroup antinodeFn)
          >> List.filter (isValidPos map))
 
 
@@ -66,19 +62,36 @@ let parse str =
                    >> List.ofSeq
                    <| grid
 
-    let grid = { antennas = antennas; height = Array.length grid; width = Array.length grid.[0] }
+    let grid = { antennas = antennas; rows = Array.length grid; columns = Array.length grid.[0] }
     grid
 
-let solve = allAntinodes >> List.distinct >> List.length
+let solve antinodeFn = mapAntinodes antinodeFn >> List.distinct >> List.length
 
-let solveAndParse = parse >> solve
+let solveAndParse = parse >> solve allAntinodes
 
 let print1 =
     Console.WriteLine(solveAndParse example1)
     Console.WriteLine(solveAndParse p1)
     ()
-   
+
+
+let allAntinodes2 (map: Board) a b =
+    let count = Math.Max(map.rows, map.columns)
+    let antinodes a b =
+        let run = a.col - b.col
+        let rise = a.row - b.row
+        [ for i in 0..count do
+             yield { col = a.col + (i * run); row = a.row + (i * rise) }
+             ]
+        |> List.filter (isValidPos map)
+
+    List.concat [ antinodes a b; antinodes b a]
+
+let solveAndParse2 str =
+    let parsed = parse str
+    solve (allAntinodes2 parsed) parsed
+
 let print2 =
-    Console.WriteLine("")
-    Console.WriteLine("")
+    Console.WriteLine(solveAndParse2 example1)
+    Console.WriteLine(solveAndParse2 p1)
     ()
