@@ -1,6 +1,8 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
-//open Day01
-//open Day02
+open Day10
+print1
+print2
+
 //open Day03
 //open Day04
 // open Day05
@@ -14,7 +16,6 @@
 // open Day13
 // open Day14
 // open Day15
-open Day16
+// open Day16
 // open Day18
-printAnswer
 

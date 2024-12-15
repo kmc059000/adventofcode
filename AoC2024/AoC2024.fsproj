@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,12 +18,8 @@
         <Compile Include="Day08.fs" />
         <Compile Include="Day09.fs" />
         <Compile Include="Day10.fs" />
-        <Compile Include="Day13.fs" />
-        <Compile Include="Day14.fs" />
-        <Compile Include="Day11.fs" />
-        <Compile Include="Day15.fs" />
-        <Compile Include="Day16.fs" />
-        <Compile Include="Program.fs" />
+        <Compile Include="DayTemplate.fs" />
+        <Compile Include="Program.fs"/>
     </ItemGroup>
 
 </Project>
