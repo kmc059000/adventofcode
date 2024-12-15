@@ -165,6 +165,8 @@ module TupleExtras =
     let mapFst f (x, y) = f x, y
 
     let mapSnd f (x, y) = x, f y
+    
+    let mapBoth f = mapFst f >> mapSnd f
 
     let extendFst f (x,y) = f (x,y), y
 
@@ -190,7 +192,8 @@ module StringExtras =
         regex.Matches(str).AsReadOnly() |> Seq.map _.Value |> Seq.toArray
         
     let characterSquare = splitInputByNewLines >> Array.map characters
-        
+    
+    let replace (findText: string) (replaceText : string) (str: String) = str.Replace(findText, replaceText)
         
 let rec gcdU64 (a : uint64) (b : uint64) =
     if b = 0UL then a
