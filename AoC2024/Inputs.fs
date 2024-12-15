@@ -4781,6 +4781,13 @@ module Day10 =
 987...."
     let p2 = ""
 
+module Day11 =
+    let example1 = "0 1 10 99 999"
+    let p1 = "0 7 198844 5687836 58 2478 25475 894"
+    
+    let example2 = ""
+    let p2 = ""
+
 module DayXX =
     let example1 = ""
     let p1 = ""

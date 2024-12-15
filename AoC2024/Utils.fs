@@ -5,7 +5,7 @@ open System.Collections.Generic
 open System.Text.RegularExpressions
 
 let reverse (input:string) = input |> Seq.rev |> System.String.Concat
-let joinInts (separator : string) (ints : seq<int>) =
+let joinInts (separator : string) (ints : seq<'a>) =
     ints
     |> Seq.map (fun x -> x.ToString())
     |> String.concat separator
