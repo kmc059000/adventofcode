@@ -234,3 +234,7 @@ let absDifference (a,b) = abs(a - b)
 
 type Sign = Positive | Negative | Zero
 let sign i = if i > 0 then Positive else if i < 0 then Negative else Zero
+
+
+let joinStrings (separator : string) (strings : string seq) =
+    String.Join(separator, strings |> Seq.toArray)
