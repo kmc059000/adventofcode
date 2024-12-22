@@ -238,3 +238,15 @@ let sign i = if i > 0 then Positive else if i < 0 then Negative else Zero
 
 let joinStrings (separator : string) (strings : string seq) =
     String.Join(separator, strings |> Seq.toArray)
+    
+
+let mapChar2dArray map arr = 
+    arr
+    |> Array.mapi (fun row rowArray -> 
+        rowArray
+        |> Array.mapi (fun col value ->
+            map row col value
+        )
+    )
+    |> Array.concat
+    |> List.ofArray
