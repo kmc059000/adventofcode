@@ -229,6 +229,7 @@ module ListExtras =
     
 
 let manhattanDistance (x1, y1) (x2, y2) = abs((int64 x1) - (int64 x2)) + abs((int64 y1) - (int64 y2))
+let manhattanDistanceDouble (x1: double, y1) (x2, y2) = abs((x1) - (x2)) + abs((y1) - (y2))
 
 let absDifference (a,b) = abs(a - b)
 
