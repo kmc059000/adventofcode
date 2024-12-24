@@ -1,4 +1,4 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
-open Day14
+open Day18
 print1
 print2
