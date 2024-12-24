@@ -147,41 +147,55 @@ let solve input exit step =
     let coordsAtSteps = parse input
     
     
-    let rec findShortestPath step =
-        let coords = Map.find step coordsAtSteps
-        let bestPath = aStarSearch { row = 0; col = 0; } exit (getNeighbors exit coords) hCost step |> List.ofSeq |> List.rev
-        match bestPath with
-        | [] -> findShortestPath (step + 1)
-        | _ -> bestPath
-    
-    let bestPath = findShortestPath step
-    printPath bestPath coordsAtSteps exit
-    bestPath |> Seq.length
+    let coords = Map.find step coordsAtSteps
+    let path = aStarSearch { row = 0; col = 0; } exit (getNeighbors exit coords) hCost step |> List.ofSeq |> List.rev
+
+    if List.isEmpty path
+    then Console.WriteLine("Found no path at step " + step.ToString())
+    else printPath path coordsAtSteps exit
+    path |> Seq.length
 
 let print1 =
     Console.WriteLine(solve example1 exitSample 12)
     Console.WriteLine(solve p1 exit 1024)
     ()
+    
+let solve2 input exit startStep =
+    let parsed = parse input
+    let endStep = Map.keys parsed |> Seq.max
 
-let parse2 input =
-    let parseLine = splitBy "," >> Array.map int >> (fun arr -> { col = arr[0]; row = arr[1] })
-    let coords = input |> (splitInputByNewLinesList >> List.map parseLine)
-    coords
-    
-let solve2 input exit step =
-    let coordsAtSteps = parse input
-    
-    let coords = parse2 input
-    let bestPath = aStarSearch { row = 0; col = 0; } exit (getNeighbors exit (Map.find step coordsAtSteps)) hCost step |> List.ofSeq |> List.rev
-    
-    // printPath bestPath coords exit
-    
-    let remainingCoords = coords |> List.skip (List.length bestPath - 1)
-    
-    let first = remainingCoords |> Seq.ofList |> Seq.filter (fun c -> List.contains c bestPath) |> Seq.head
-    first
-   
+    let rec breakingPath (startStep: int) (endStep: int) =
+        if startStep = endStep then
+            // cant recurse, so return step
+            startStep
+        elif startStep = (endStep - 1) then
+            Console.WriteLine("Picking between: " + startStep.ToString() + " - " + endStep.ToString() + " with mid: ")
+
+            // cant recurse, so just pick the right one
+            let startPathBroken = aStarSearch { row = 0; col = 0; } exit (getNeighbors exit (Map.find startStep parsed)) hCost startStep |> List.ofSeq |> List.rev |> List.isEmpty
+
+            if startPathBroken
+            then startStep
+            else endStep
+
+        else
+            let mid = startStep + ((endStep - startStep) / 2)
+
+            Console.WriteLine("Trying: " + startStep.ToString() + " - " + endStep.ToString() + " with mid: " + mid.ToString())
+
+            let midPathBroken = aStarSearch { row = 0; col = 0; } exit (getNeighbors exit (Map.find mid parsed)) hCost mid |> List.ofSeq |> List.rev |> List.isEmpty
+
+            if midPathBroken
+            then breakingPath startStep mid
+            else breakingPath mid endStep
+
+    let breakingStep = breakingPath startStep endStep
+    let coord = splitInputByNewLinesList input |> List.item (breakingStep - 1)
+    coord
+
+
+
 let print2 =
     Console.WriteLine(solve2 example1 exitSample 12)
-    Console.WriteLine("")
+    Console.WriteLine(solve2 p1 exit 1024)
     ()
