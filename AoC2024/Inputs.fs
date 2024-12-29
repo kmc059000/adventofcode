@@ -10780,6 +10780,25 @@ brrwubwwgwgugrgbwgbbwubwbubwbbwubbuurrwgwwwrbuuuuuuububgbu"
     
     let example2 = ""
     let p2 = "" 
+
+module Day17 =
+    let example1 = "Register A: 729
+Register B: 0
+Register C: 0
+
+Program: 0,1,5,4,3,0"
+    let p1 = "Register A: 46187030
+Register B: 0
+Register C: 0
+
+Program: 2,4,1,5,7,5,0,3,4,0,1,6,5,5,3,0"
+    
+    let example2 = "Register A: 2024
+Register B: 0
+Register C: 0
+
+Program: 0,3,5,4,3,0"
+    let p2 = ""
     
 module DayXX =
     let example1 = ""

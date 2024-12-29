@@ -252,3 +252,10 @@ let mapChar2dArray map arr =
     )
     |> Array.concat
     |> List.ofArray
+    
+    
+let readInt str =
+    Regex("[\d]+", RegexOptions.Compiled).Match(str).Value |> int
+    
+let readInts str =
+    Regex("[\d]+", RegexOptions.Compiled).Matches(str) |> List.ofSeq |> List.map (_.Value >> int)
