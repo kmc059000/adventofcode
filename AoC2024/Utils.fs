@@ -10,7 +10,7 @@ let joinInts (separator : string) (ints : seq<'a>) =
     |> Seq.map (fun x -> x.ToString())
     |> String.concat separator
     
-let splitBy (separator : string) (str: string) = str.Split(separator, StringSplitOptions.RemoveEmptyEntries)
+let splitBy (separator : string) (str: string) = str.Split(separator, StringSplitOptions.RemoveEmptyEntries) |> Array.map _.Trim()
 let splitByList separator = splitBy separator >> List.ofArray
 
 let splitByMapList separator map = splitBy separator >> List.ofArray >> List.map map
