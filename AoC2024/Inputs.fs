@@ -10806,7 +10806,11 @@ module Day21 =
 179A
 456A
 379A"
-    let p1 = ""
+    let p1 = "780A
+539A
+341A
+189A
+682A"
     
     let example2 = ""
     let p2 = ""
