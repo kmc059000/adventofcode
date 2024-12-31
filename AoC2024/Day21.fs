@@ -147,44 +147,59 @@ let allPaths map code =
     // segments has all shortest paths for a given segment
     // parents includes all combinations of preceeding segments
     // combine the current segment's paths with all of the parents
-    let rec allPaths' (segments: string list list) (parents: string list): string list =
+    let rec allPaths' (segments: string list list) (parents: string list): string seq =
         match segments with
         | [] -> parents
         | segmentPaths::rest ->
             segmentPaths
-            |> List.collect
+            |> Seq.collect
                    (fun segmentPath ->
                         let newParents =
                             parents |> List.map (fun parent -> parent + segmentPath + "A")
                         allPaths' rest newParents)
     allPaths' paths [""]
 
-let codesToArrows = allPaths numPadShortestPaths_ >> List.ofSeq
+let codesToArrows = allPaths numPadShortestPaths_
 let arrowsToArrows code = allPaths arrowShortestPaths_ code
 
-let path = codesToArrows >> List.collect arrowsToArrows >> List.collect arrowsToArrows
+let path = codesToArrows >> Seq.collect arrowsToArrows >> Seq.collect arrowsToArrows
 
-"379A" |> path |> List.minBy _.Length |> _.Length |> tapValue |> ignore
+//"379A" |> path |> List.minBy _.Length |> _.Length |> tapValue |> ignore
 
-let totalShortestPath = path >> List.minBy _.Length >> _.Length
+let totalShortestPath (pathFn: string -> string seq) = pathFn >> Seq.minBy _.Length >> _.Length
 
-let score code =
+let score pathFn code =
     let num = readInts code |> List.head
-    let score = totalShortestPath code
+    let score = totalShortestPath pathFn code
     score, num
     
-let parseAndSolve = splitInputByNewLinesList >> List.map score >> tapValues >> List.ofSeq >> List.map (fun (a,b) -> a * b) >> List.sum
+let parseAndSolve pathfn = splitInputByNewLinesList >> List.map (score pathfn) >> tapValues >> List.ofSeq >> List.map (fun (a,b) -> a * b) >> List.sum
 
 //totalShortestPath "029A" |> printfn "%i"
 //printfn "<v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A"
 
 let print1 =
-    Console.WriteLine(parseAndSolve example1)
-    Console.WriteLine(parseAndSolve p1)
+    // Console.WriteLine(parseAndSolve path example1)
+    // Console.WriteLine(parseAndSolve path p1)
     ()
-   
+
+let progress a =
+    printfn $"here %s{Guid.NewGuid().ToString()}"
+    a
+
+let level = Seq.collect arrowsToArrows >> progress
+
+let path2 = codesToArrows
+            >> level >> level >> level >> level >> level
+            >> level >> level >> level >> level >> level
+            >> level >> level >> level >> level >> level
+            >> level >> level >> level >> level >> level
+            >> level >> level >> level >> level >> level
+ 
+"029A" |> path2 |> tapValues |> Seq.minBy _.Length |> _.Length |> tapValue |> ignore
+
 let print2 =
-    Console.WriteLine("")
+    //Console.WriteLine(parseAndSolve path example1)
     Console.WriteLine("")
     ()
     
