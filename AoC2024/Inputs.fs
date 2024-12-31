@@ -10799,6 +10799,17 @@ Register C: 0
 
 Program: 0,3,5,4,3,0"
     let p2 = ""
+
+module Day21 =
+    let example1 = "029A
+980A
+179A
+456A
+379A"
+    let p1 = ""
+    
+    let example2 = ""
+    let p2 = ""
     
 module DayXX =
     let example1 = ""
